@@ -6,27 +6,39 @@ const app = express();
 app.use(morgan('common'));
 
 app.get('/', (req, res) => {
+  res.json('OK');
+});
+
+app.get('/send', (req, res) => {
 
   const {sentence} = req.query;
-  const threshold = 0.90;
+  const threshold = 0.85;
 
-  if(sentence){
+  if(!sentence){
+    return res.status(400).json({error: 'sentence must exist'});
+  }
+
+  if(sentence && sentence.length > 1){
 
     toxicity.load(threshold).then(model => {
     
 
       model.classify(sentence).then(predictions => {
 
-        // let toxic = false;
-        // let i = 0;
-        // while (!toxic && i < predictions.length -1){
-        //   if ([null, true].includes(predictions[i].results[0].match)){
-        //     toxic = true;
-        //   }
-        //   i++;
-        // }
+        let tox = false;
+        let rep = false;
+        let i = 0;
+        while (!tox && i < predictions.length -1){
+          if ([null, true].includes(predictions[i].results[0].match)){
+            tox = true;
+          } 
+          if (predictions[i].results[0].probabilities['1'] > .02){
+            rep = true;
+          }
+          i++;
+        }
 
-        res.json(predictions);
+        res.json({toxic: tox, report: rep, prediction: predictions});
       });
     });
   }
