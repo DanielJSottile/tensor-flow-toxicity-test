@@ -1,0 +1,20 @@
+{
+  "name": "tensorflow-toxicity-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tensorflow-models/toxicity": "^1.2.2",
+    "@tensorflow/tfjs": "^1.7.4",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
+  }
+}
